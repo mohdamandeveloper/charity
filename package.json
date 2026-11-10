@@ -1,5 +1,5 @@
 {
-  "name": "charity-website",
+  "name": "charity",
   "version": "1.0.0",
   "description": "Charity website built with Hugo and Sveltia CMS",
   "scripts": {
