@@ -3,7 +3,7 @@
 
 backend:
   name: github
-  repo: YOUR-GITHUB-USERNAME/YOUR-REPO-NAME   # ← change this
+  repo: https://github.com/mohdamandeveloper/charity   # ← change this
   branch: main
   # Optional: for "Sign in with GitHub" (instead of a personal access token),
   # deploy the free sveltia-cms-auth Cloudflare Worker and put its URL here:
