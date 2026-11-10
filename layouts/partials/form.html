@@ -1,0 +1,69 @@
+{{- /*
+  Forms post to a free form service (Web3Forms by default), so nothing runs on
+  your own server. Set the access key in CMS → Settings → Forms.
+  Types: contact, volunteer, partner, help
+*/ -}}
+{{- $f := hugo.Data.settings.forms -}}
+{{- $type := .type -}}
+{{- $page := .page -}}
+{{- $titles := dict "contact" "Send us a message" "volunteer" "Sign up to volunteer" "partner" "Partner with us" "help" "Tell us about the situation" -}}
+<form class="form-card" action="{{ $f.action }}" method="POST" data-ajax-form>
+  <h2>{{ index $titles $type | default "Get in touch" }}</h2>
+  <input type="hidden" name="access_key" value="{{ $f.access_key }}">
+  <input type="hidden" name="subject" value="New {{ $type }} form: {{ $page.Title }}">
+  <input type="hidden" name="from_name" value="{{ hugo.Data.settings.site_name }} website">
+  <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+  {{ if eq $type "help" }}
+  <fieldset class="radio-row">
+    <legend>Who needs help?</legend>
+    <label><input type="radio" name="referral_type" value="Myself" checked> I need help</label>
+    <label><input type="radio" name="referral_type" value="Someone I know"> Someone I know</label>
+  </fieldset>
+  {{ end }}
+
+  <div class="field-row">
+    <label>Full name<input type="text" name="name" required autocomplete="name"></label>
+    <label>Phone<input type="tel" name="phone" required autocomplete="tel" pattern="[0-9+ \-]{8,15}"></label>
+  </div>
+  <label>Email<input type="email" name="email" required autocomplete="email"></label>
+
+  {{ if eq $type "volunteer" }}
+  <label>Area of interest
+    <select name="interest">
+      <option>Home visits and case support</option>
+      <option>Events and fundraising</option>
+      <option>Teaching and mentoring</option>
+      <option>Photography, writing or design</option>
+      <option>Anything that helps</option>
+    </select>
+  </label>
+  <label>Availability<input type="text" name="availability" placeholder="e.g. Weekends, 4 hours a month"></label>
+  {{ else if eq $type "partner" }}
+  <label>Organisation<input type="text" name="organisation" required autocomplete="organization"></label>
+  <label>Type of partnership
+    <select name="partnership">
+      <option>CSR funding</option>
+      <option>Employee volunteering</option>
+      <option>In-kind support</option>
+      <option>Something else</option>
+    </select>
+  </label>
+  {{ else if eq $type "help" }}
+  <label>City / area<input type="text" name="city" required></label>
+  <label>Type of need
+    <select name="need">
+      <option>Medical bills</option>
+      <option>School or college fees</option>
+      <option>Rent and living costs</option>
+      <option>Loss of income</option>
+      <option>Other</option>
+    </select>
+  </label>
+  {{ end }}
+
+  <label>{{ if eq $type "help" }}Briefly describe the situation{{ else }}Message{{ end }}<textarea name="message" rows="5" {{ if eq $type "help" }}required{{ end }}></textarea></label>
+  <label class="consent"><input type="checkbox" required> <span>I agree to be contacted about this request and to the <a href="{{ "/privacy/" | relURL }}">privacy policy</a>.</span></label>
+  <button class="btn btn-primary btn-lg btn-block" type="submit">Submit</button>
+  <p class="form-status" role="status" aria-live="polite"></p>
+</form>

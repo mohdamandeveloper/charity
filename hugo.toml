@@ -1,0 +1,37 @@
+# Site-wide settings that rarely change.
+# Everything editors need to change (name, contact, menus, homepage) lives in
+# the /data folder and is editable from the CMS at /admin/.
+
+baseURL = "https://www.example.org/"
+locale = "en-IN"
+title = "Brightpath Foundation"
+enableRobotsTXT = true
+timeZone = "Asia/Kolkata"
+
+[pagination]
+  pagerSize = 9
+
+[taxonomies]
+  category = "categories"
+
+[markup.goldmark.renderer]
+  # Editors write Markdown in the CMS; keep raw HTML off for safety.
+  unsafe = false
+
+[outputs]
+  home = ["HTML", "RSS"]
+  section = ["HTML", "RSS"]
+
+[sitemap]
+  changefreq = "weekly"
+
+[permalinks]
+  campaigns = "/campaigns/:contentbasename/"
+  causes = "/causes/:contentbasename/"
+  news = "/news/:year/:contentbasename/"
+
+# Cause funds use the same page design as campaigns.
+[[cascade]]
+  type = "campaigns"
+  [cascade.target]
+    path = "{/causes,/causes/**}"

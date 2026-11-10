@@ -1,0 +1,33 @@
+{{ define "main" }}
+{{ partial "page-header.html" . }}
+<section class="section section-tight">
+  <div class="container">
+    {{- $open := where .Pages "Params.status" "!=" "closed" -}}
+    {{- $closed := where .Pages "Params.status" "closed" -}}
+    {{ with .Content }}<div class="prose narrow">{{ . }}</div>{{ end }}
+
+    {{- $cats := slice -}}
+    {{- range .Pages }}{{ range .Params.categories }}{{ $cats = $cats | append . }}{{ end }}{{ end -}}
+    <div class="filters" role="group" aria-label="Filter campaigns by category">
+      <button class="chip is-active" data-filter="all">All</button>
+      {{ range uniq (sort $cats) }}<button class="chip" data-filter="{{ urlize (lower .) }}">{{ . }}</button>{{ end }}
+    </div>
+
+    <h2 class="sr-only">Open campaigns</h2>
+    <div class="grid cards" data-filter-grid>
+      {{ range $open }}
+      <div data-cats="{{ range .Params.categories }}{{ urlize (lower .) }} {{ end }}">{{ partial "card.html" . }}</div>
+      {{ end }}
+    </div>
+    <p class="empty" hidden>No open campaigns in this category right now.</p>
+
+    {{ with $closed }}
+    <h2 class="sub-heading">Completed campaigns</h2>
+    <div class="grid cards">
+      {{ range . }}{{ partial "card.html" . }}{{ end }}
+    </div>
+    {{ end }}
+  </div>
+</section>
+{{ partial "help-band.html" . }}
+{{ end }}

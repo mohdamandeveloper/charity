@@ -1,0 +1,50 @@
+{{ define "main" }}
+{{- $s := hugo.Data.settings -}}
+{{- $link := or .Params.donate_link $s.donate.link -}}
+<article class="section campaign">
+  <div class="container campaign-grid">
+    <div class="campaign-main">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="{{ "/" | relURL }}">Home</a> / <a href="{{ .Parent.RelPermalink }}">{{ .Parent.Title }}</a>
+      </nav>
+      <h1>{{ .Title }}</h1>
+      <div class="meta-row">
+        {{ partial "days-left.html" . }}
+        {{ range .Params.categories }}<a class="tag tag-inline" href="{{ printf "/categories/%s/" (urlize (lower .)) | relURL }}">{{ . }}</a>{{ end }}
+        {{ with .Params.location }}<span class="meta">{{ partial "icon.html" "pin" }} {{ . }}</span>{{ end }}
+      </div>
+      {{ with .Params.image }}<img class="campaign-img" src="{{ . | relURL }}" alt="{{ $.Params.image_alt | default $.Title }}" width="1200" height="800">{{ end }}
+      <div class="prose">{{ .Content }}</div>
+    </div>
+
+    <aside class="donate-box" aria-label="Donate to this campaign">
+      {{ partial "progress.html" . }}
+      {{ with .Params.donors }}<p class="meta">{{ . }} donors so far</p>{{ end }}
+      {{ if eq .Params.status "closed" }}
+        <p class="closed-note">This campaign is closed. Thank you to everyone who gave.</p>
+        <a class="btn btn-primary btn-block" href="{{ "/campaigns/" | relURL }}">See open campaigns</a>
+      {{ else }}
+        <a class="btn btn-primary btn-lg btn-block" href="{{ $link }}" target="_blank" rel="noopener">{{ partial "icon.html" "heart" }} Donate now</a>
+        <p class="small">Secure payment by UPI, card or net banking. You will receive an 80G receipt by email.</p>
+      {{ end }}
+      <div class="share">
+        <span>Share this campaign</span>
+        <a href="https://wa.me/?text={{ printf "%s %s" .Title .Permalink | urlquery }}" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u={{ .Permalink | urlquery }}" target="_blank" rel="noopener">Facebook</a>
+        <button class="copy-link" data-url="{{ .Permalink }}">Copy link</button>
+      </div>
+      <div class="verified">{{ partial "icon.html" "shield" }} <span>Verified by our case team</span></div>
+    </aside>
+  </div>
+</article>
+
+{{- $related := where (where (where site.RegularPages "Section" "campaigns") "Permalink" "!=" .Permalink) "Params.status" "!=" "closed" | first 3 -}}
+{{ with $related }}
+<section class="section section-alt">
+  <div class="container">
+    <h2>Other families who need help</h2>
+    <div class="grid cards">{{ range . }}{{ partial "card.html" . }}{{ end }}</div>
+  </div>
+</section>
+{{ end }}
+{{ end }}

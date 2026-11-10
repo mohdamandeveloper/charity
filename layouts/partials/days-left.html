@@ -1,0 +1,9 @@
+{{- /* "Ends in X days" badge. Computed at build time and refreshed in the browser by main.js. */ -}}
+{{- with .Params.end_date -}}
+  {{- $end := time . -}}
+  {{- $days := int (math.Ceil (div ($end.Sub now).Hours 24)) -}}
+  <span class="days-left" data-end="{{ $end.Format "2006-01-02" }}">
+    {{ partial "icon.html" "clock" }}
+    <span class="days-text">{{ if gt $days 0 }}Ends in {{ $days }} day{{ if ne $days 1 }}s{{ end }}{{ else }}Campaign closed{{ end }}</span>
+  </span>
+{{- end -}}

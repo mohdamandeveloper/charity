@@ -1,0 +1,21 @@
+{{- /* Formats a number Indian-style: 185000 → 1,85,000 */ -}}
+{{- $n := string (int (math.Round (float .))) -}}
+{{- $len := len $n -}}
+{{- if le $len 3 -}}
+  {{- $n -}}
+{{- else -}}
+  {{- $last := substr $n (sub $len 3) 3 -}}
+  {{- $rest := substr $n 0 (sub $len 3) -}}
+  {{- $parts := slice -}}
+  {{- range seq 10 -}}
+    {{- if gt (len $rest) 2 -}}
+      {{- $parts = $parts | append (substr $rest (sub (len $rest) 2) 2) -}}
+      {{- $rest = substr $rest 0 (sub (len $rest) 2) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $out := $rest -}}
+  {{- range $i, $_ := $parts -}}
+    {{- $out = printf "%s,%s" $out (index $parts (sub (sub (len $parts) 1) $i)) -}}
+  {{- end -}}
+  {{- printf "%s,%s" $out $last -}}
+{{- end -}}

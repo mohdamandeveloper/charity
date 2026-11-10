@@ -1,0 +1,157 @@
+{{ define "main" }}
+{{- $h := hugo.Data.home -}}
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">{{ $h.hero.eyebrow }}</p>
+      <h1>{{ $h.hero.title }}</h1>
+      <p class="lead">{{ $h.hero.text }}</p>
+      <div class="btn-row">
+        {{ with $h.hero.primary_button }}<a class="btn btn-primary btn-lg" href="{{ .url | relURL }}">{{ .label }} {{ partial "icon.html" "arrow" }}</a>{{ end }}
+        {{ with $h.hero.secondary_button }}<a class="btn btn-ghost btn-lg" href="{{ .url | relURL }}">{{ .label }}</a>{{ end }}
+      </div>
+    </div>
+    <div class="hero-media">
+      {{ with $h.hero.image }}<img src="{{ . | relURL }}" alt="" width="720" height="640">{{ end }}
+      {{ with index $h.about.stats 0 }}
+      <div class="hero-badge"><strong>{{ .value }}</strong><span>{{ .label }}</span></div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+{{- $now := now -}}
+{{- $active := where (where site.RegularPages "Section" "campaigns") "Params.status" "!=" "closed" -}}
+{{- $featured := where $active "Params.featured" true -}}
+{{- $list := union $featured $active | first ($h.campaigns_count | default 6) -}}
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>{{ $h.campaigns_heading }}</h2>
+      <a class="link-arrow" href="{{ "/campaigns/" | relURL }}">View all campaigns {{ partial "icon.html" "arrow" }}</a>
+    </div>
+    <div class="grid cards">
+      {{ range $list }}{{ partial "card.html" . }}{{ end }}
+    </div>
+  </div>
+</section>
+
+{{- with $h.event }}{{ if .enabled }}
+<section class="section section-tight">
+  <div class="container">
+    <a class="event-banner" href="{{ .button_url | relURL }}">
+      <div class="event-copy">
+        <p class="eyebrow eyebrow-light">{{ partial "icon.html" "calendar" }} {{ .date }}</p>
+        <h2>{{ .title }}</h2>
+        <p>{{ .text }}</p>
+        <span class="btn btn-light">{{ .button_label }} {{ partial "icon.html" "arrow" }}</span>
+      </div>
+      {{ with .image }}<img src="{{ . | relURL }}" alt="" loading="lazy">{{ end }}
+    </a>
+  </div>
+</section>
+{{ end }}{{ end -}}
+
+<section class="section about-band">
+  <div class="container about-grid">
+    <div>
+      <h2>{{ $h.about.heading }}</h2>
+      <p class="lead">{{ $h.about.text }}</p>
+      <a class="link-arrow" href="{{ "/about/" | relURL }}">What we do {{ partial "icon.html" "arrow" }}</a>
+    </div>
+    <dl class="stats">
+      {{ range $h.about.stats }}
+      <div class="stat"><dt>{{ .label }}</dt><dd>{{ .value }}</dd></div>
+      {{ end }}
+    </dl>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="center">{{ $h.features_heading }}</h2>
+    <div class="grid features">
+      {{ range $h.features }}
+      <div class="feature">
+        <span class="feature-icon">{{ partial "icon.html" .icon }}</span>
+        <h3>{{ .title }}</h3>
+        <p>{{ .text }}</p>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+{{- $causes := where site.RegularPages "Section" "causes" -}}
+{{- if $causes }}
+<section class="section causes-band">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>{{ $h.causes_heading }}</h2>
+        <p class="section-sub">{{ $h.causes_text }}</p>
+      </div>
+      <a class="link-arrow link-light" href="{{ "/causes/" | relURL }}">Explore cause funds {{ partial "icon.html" "arrow" }}</a>
+    </div>
+    <div class="grid cards">
+      {{ range first 3 $causes }}{{ partial "card.html" . }}{{ end }}
+    </div>
+  </div>
+</section>
+{{- end }}
+
+<section class="section">
+  <div class="container">
+    <h2 class="center">{{ $h.categories_heading }}</h2>
+    <div class="grid categories">
+      {{ range $h.categories }}
+      <div class="cat-group">
+        <h3>{{ .group }}</h3>
+        <ul>
+          {{ range .items }}<li><a href="{{ printf "/categories/%s/" (urlize (lower .)) | relURL }}">{{ . }} {{ partial "icon.html" "arrow" }}</a></li>{{ end }}
+        </ul>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>{{ $h.community_heading }}</h2>
+        <p class="section-sub">{{ $h.community_text }}</p>
+      </div>
+      <a class="link-arrow" href="{{ "/community/" | relURL }}">Our community {{ partial "icon.html" "arrow" }}</a>
+    </div>
+    <div class="grid cards">
+      {{ range $h.community }}
+      <article class="program">
+        {{ with .image }}<img src="{{ . | relURL }}" alt="" loading="lazy" width="600" height="420">{{ end }}
+        <h3>{{ .title }}</h3>
+        <p>{{ .text }}</p>
+      </article>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+{{- $news := where site.RegularPages "Section" "news" -}}
+{{- if $news }}
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>Latest news</h2>
+      <a class="link-arrow" href="{{ "/news/" | relURL }}">All news {{ partial "icon.html" "arrow" }}</a>
+    </div>
+    <div class="grid cards">
+      {{ range first 3 $news }}{{ partial "news-card.html" . }}{{ end }}
+    </div>
+  </div>
+</section>
+{{- end }}
+
+{{ partial "help-band.html" . }}
+{{ end }}

@@ -1,0 +1,42 @@
+{{- $s := hugo.Data.settings -}}
+{{- $current := .RelPermalink -}}
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="{{ "/" | relURL }}" aria-label="{{ $s.site_name }} home">
+      {{- if $s.logo }}
+        <img src="{{ $s.logo | relURL }}" alt="{{ $s.site_name }}" height="40">
+      {{- else }}
+        <span class="brand-mark" aria-hidden="true">{{ partial "icon.html" "sun" }}</span>
+        <span class="brand-name">{{ $s.site_name }}</span>
+      {{- end }}
+    </a>
+
+    <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">
+      <span class="sr-only">Menu</span>
+      <span class="bars" aria-hidden="true"></span>
+    </button>
+
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <ul class="nav-list">
+        {{- range hugo.Data.menu.main }}
+          {{- $active := or (eq $current .url) (and (ne .url "/") (hasPrefix $current .url)) }}
+          {{- if .children }}
+          <li class="has-sub">
+            <button class="nav-link sub-toggle{{ if $active }} active{{ end }}" aria-expanded="false">
+              {{ .label }} {{ partial "icon.html" "chevron" }}
+            </button>
+            <ul class="sub-menu">
+              {{- range .children }}
+              <li><a href="{{ .url | relURL }}">{{ .label }}</a></li>
+              {{- end }}
+            </ul>
+          </li>
+          {{- else }}
+          <li><a class="nav-link{{ if $active }} active{{ end }}" href="{{ .url | relURL }}">{{ .label }}</a></li>
+          {{- end }}
+        {{- end }}
+      </ul>
+      <a class="btn btn-primary nav-cta" href="{{ "/donate/" | relURL }}">{{ partial "icon.html" "heart" }} Donate</a>
+    </nav>
+  </div>
+</header>

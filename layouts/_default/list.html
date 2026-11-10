@@ -1,0 +1,17 @@
+{{ define "main" }}
+{{ partial "page-header.html" . }}
+<section class="section section-tight">
+  <div class="container">
+    {{ with .Content }}<div class="prose narrow">{{ . }}</div>{{ end }}
+    {{ if .Pages }}
+    <div class="grid cards">
+      {{ range .Pages }}
+        {{ if eq .Section "news" }}{{ partial "news-card.html" . }}{{ else }}{{ partial "card.html" . }}{{ end }}
+      {{ end }}
+    </div>
+    {{ else }}
+    <p class="empty">Nothing here yet. <a href="{{ "/campaigns/" | relURL }}">See all campaigns</a>.</p>
+    {{ end }}
+  </div>
+</section>
+{{ end }}

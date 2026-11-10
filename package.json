@@ -1,0 +1,14 @@
+{
+  "name": "charity-website",
+  "version": "1.0.0",
+  "description": "Charity website built with Hugo and Sveltia CMS",
+  "scripts": {
+    "dev": "hugo server --disableFastRender",
+    "build": "hugo --gc --minify"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "hugo-extended": "^0.169.0"
+  },
+  "private": true
+}

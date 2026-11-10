@@ -1,0 +1,40 @@
+{{ define "main" }}
+{{- $s := hugo.Data.settings -}}
+{{ partial "page-header.html" . }}
+
+<section class="section section-tight">
+  <div class="container {{ if .Params.form }}page-with-form{{ else }}narrow{{ end }}">
+    <div>
+      {{ with .Params.image }}<img class="article-img" src="{{ . | relURL }}" alt="" width="1200" height="700">{{ end }}
+      <div class="prose">{{ .Content }}</div>
+
+      {{- /* Optional blocks editors can switch on per page */ -}}
+      {{ if .Params.show_team }}{{ partial "team.html" . }}{{ end }}
+
+      {{ with .Params.reports }}
+      <ul class="file-list">
+        {{ range . }}
+        <li><a href="{{ .file | relURL }}" target="_blank" rel="noopener">{{ partial "icon.html" "file" }} <span>{{ .title }}</span></a></li>
+        {{ end }}
+      </ul>
+      {{ end }}
+
+      {{ with .Params.faqs }}
+      <div class="faqs">
+        {{ range . }}
+        <details>
+          <summary>{{ .question }}</summary>
+          <div class="prose">{{ .answer | markdownify }}</div>
+        </details>
+        {{ end }}
+      </div>
+      {{ end }}
+
+      {{ if .Params.show_bank_details }}{{ partial "bank-details.html" . }}{{ end }}
+      {{ if .Params.show_contact }}{{ partial "contact-details.html" . }}{{ end }}
+    </div>
+
+    {{ with .Params.form }}{{ partial "form.html" (dict "type" . "page" $) }}{{ end }}
+  </div>
+</section>
+{{ end }}

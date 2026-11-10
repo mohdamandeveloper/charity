@@ -1,0 +1,13 @@
+{{- /* Progress bar. Context: a campaign or cause page */ -}}
+{{- $cur := hugo.Data.settings.currency -}}
+{{- $goal := float (or .Params.goal 0) -}}
+{{- $raised := float (or .Params.raised 0) -}}
+{{- $pct := 0 -}}
+{{- if gt $goal 0 }}{{ $pct = math.Min 100 (math.Round (mul (div $raised $goal) 100)) }}{{ end -}}
+<div class="progress">
+  <div class="progress-top">
+    <strong>{{ $pct }}%</strong>
+    <span>{{ $cur }}{{ partial "inr.html" $raised }} raised of {{ $cur }}{{ partial "inr.html" $goal }}</span>
+  </div>
+  <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ $pct }}" aria-label="{{ $pct }}% funded"><span style="width: {{ $pct }}%"></span></div>
+</div>

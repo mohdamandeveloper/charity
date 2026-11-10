@@ -1,0 +1,12 @@
+{{ define "main" }}
+<article class="section article">
+  <div class="container narrow">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="{{ "/" | relURL }}">Home</a> / <a href="{{ "/news/" | relURL }}">News</a></nav>
+    <h1>{{ .Title }}</h1>
+    <p class="meta"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>{{ with .Params.author }} · {{ . }}{{ end }}</p>
+    {{ with .Params.image }}<img class="article-img" src="{{ . | relURL }}" alt="{{ $.Params.image_alt | default "" }}" width="1200" height="800">{{ end }}
+    <div class="prose">{{ .Content }}</div>
+    <p><a class="link-arrow" href="{{ "/news/" | relURL }}">Back to all news {{ partial "icon.html" "arrow" }}</a></p>
+  </div>
+</article>
+{{ end }}

@@ -1,0 +1,41 @@
+site_name: Brightpath Foundation
+tagline: Verified help for families who fall through the gaps
+logo: ""
+description: Brightpath Foundation connects families facing medical, education and living-cost emergencies with donors who want to help. Every case is verified before it is published.
+currency: "₹"
+
+contact:
+  email: hello@example.org
+  phone: "+91 98765 43210"
+  address: |
+    Your office address line 1
+    Locality, New Delhi 110043
+  hours: Mon–Sat, 10:00 am – 6:00 pm
+
+registration: Brightpath Foundation is a registered public charitable trust. Donations are eligible for tax exemption under Section 80G of the Income Tax Act. Registration and 80G details are available on request.
+
+donate:
+  # Default donation link (e.g. a Razorpay Payment Page) used when a campaign
+  # does not have its own link.
+  link: https://rzp.io/l/your-payment-page
+  upi_id: yourcharity@upi
+  bank_name: Your Bank Name
+  account_name: Brightpath Foundation
+  account_number: "XXXXXXXXXXXX"
+  ifsc: ABCD0123456
+
+forms:
+  # Forms are sent through a free form service so no code runs on your server.
+  # Web3Forms: create a free access key at web3forms.com and paste it here.
+  action: https://api.web3forms.com/submit
+  access_key: YOUR-WEB3FORMS-ACCESS-KEY
+
+social:
+  - name: Facebook
+    url: https://facebook.com/
+  - name: Instagram
+    url: https://instagram.com/
+  - name: LinkedIn
+    url: https://linkedin.com/
+  - name: YouTube
+    url: https://youtube.com/

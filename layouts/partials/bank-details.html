@@ -1,0 +1,24 @@
+{{- with hugo.Data.settings.donate }}
+<div class="give-options">
+  <div class="give-card give-card-main">
+    <h2>Donate online</h2>
+    <p>Pay securely by UPI, debit/credit card or net banking. An 80G receipt is emailed to you automatically.</p>
+    <a class="btn btn-primary btn-lg" href="{{ .link }}" target="_blank" rel="noopener">{{ partial "icon.html" "heart" }} Donate now</a>
+  </div>
+  <div class="give-card">
+    <h2>UPI</h2>
+    <p>Pay from any UPI app to:</p>
+    <p class="code">{{ .upi_id }}</p>
+  </div>
+  <div class="give-card">
+    <h2>Bank transfer</h2>
+    <dl class="bank">
+      <dt>Account name</dt><dd>{{ .account_name }}</dd>
+      <dt>Account no.</dt><dd>{{ .account_number }}</dd>
+      <dt>IFSC</dt><dd>{{ .ifsc }}</dd>
+      <dt>Bank</dt><dd>{{ .bank_name }}</dd>
+    </dl>
+    <p class="small">After a UPI or bank transfer, email your PAN and transaction ID to <a href="mailto:{{ hugo.Data.settings.contact.email }}">{{ hugo.Data.settings.contact.email }}</a> for your 80G receipt.</p>
+  </div>
+</div>
+{{- end }}

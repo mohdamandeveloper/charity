@@ -1,0 +1,12 @@
+{{- with hugo.Data.home.help_band }}
+<section class="help-band">
+  <div class="container help-inner">
+    <span class="help-icon">{{ partial "icon.html" "hand" }}</span>
+    <div>
+      <h2>{{ .title }}</h2>
+      <p>{{ .text }}</p>
+    </div>
+    <a class="btn btn-primary btn-lg" href="{{ .button_url | relURL }}">{{ .button_label }}</a>
+  </div>
+</section>
+{{- end }}

@@ -1,0 +1,10 @@
+<article class="card news-card">
+  <a class="card-img" href="{{ .RelPermalink }}" tabindex="-1" aria-hidden="true">
+    {{- with .Params.image }}<img src="{{ . | relURL }}" alt="" loading="lazy" width="600" height="400">{{ end }}
+  </a>
+  <div class="card-body">
+    <time class="meta" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
+    <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+    <p>{{ .Params.summary | default .Summary | plainify | truncate 130 }}</p>
+  </div>
+</article>

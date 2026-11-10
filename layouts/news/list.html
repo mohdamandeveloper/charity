@@ -1,0 +1,12 @@
+{{ define "main" }}
+{{ partial "page-header.html" . }}
+<section class="section section-tight">
+  <div class="container">
+    {{ $pager := .Paginate .Pages }}
+    <div class="grid cards">
+      {{ range $pager.Pages }}{{ partial "news-card.html" . }}{{ end }}
+    </div>
+    {{ partial "pagination.html" . }}
+  </div>
+</section>
+{{ end }}

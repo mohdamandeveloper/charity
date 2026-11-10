@@ -1,0 +1,20 @@
+{{- with hugo.Data.team }}
+<p class="lead">{{ .intro }}</p>
+<div class="team">
+  {{ range .members }}
+  <div class="member">
+    {{ if .photo }}
+      <img src="{{ .photo | relURL }}" alt="{{ .name }}" width="160" height="160" loading="lazy">
+    {{ else }}
+      {{- $initials := "" }}{{ range split .name " " }}{{ $initials = printf "%s%s" $initials (substr . 0 1) }}{{ end }}
+      <span class="avatar" aria-hidden="true">{{ $initials }}</span>
+    {{ end }}
+    <div>
+      <h3>{{ .name }}</h3>
+      <p class="role">{{ .role }}</p>
+      <p>{{ .bio }}</p>
+    </div>
+  </div>
+  {{ end }}
+</div>
+{{- end }}

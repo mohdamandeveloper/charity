@@ -1,0 +1,80 @@
+hero:
+  eyebrow: Verified crowdfunding for families in need
+  title: Small gifts. Real families. Verified help.
+  text: We find people who fall outside existing support schemes, verify their needs, and share their stories so you can help directly.
+  image: /images/uploads/hero.jpg
+  primary_button:
+    label: Browse campaigns
+    url: /campaigns/
+  secondary_button:
+    label: Support our work
+    url: /donate/
+
+campaigns_heading: Support a verified campaign today
+campaigns_count: 6
+
+event:
+  enabled: true
+  title: Walk for Hope 2027
+  text: Join 2,000 walkers on a 5 km route through the city. Every step raises funds for families in our care.
+  date: Sunday, 14 February 2027
+  image: /images/uploads/event.jpg
+  button_label: Register to walk
+  button_url: /news/2026/walk-for-hope-2027/
+
+about:
+  heading: A community of giving since 2014
+  text: Brightpath Foundation is a registered charitable trust. We connect people who fall outside existing support networks with donors who want to help — one family at a time, or through cause funds that pool donations where they are needed most.
+  stats:
+    - value: "₹4.2 Cr+"
+      label: Raised since 2014
+    - value: "1,350+"
+      label: Families supported
+    - value: "82%"
+      label: Campaigns fully funded
+
+features_heading: Why give with Brightpath
+features:
+  - icon: shield
+    title: Every case verified
+    text: Our case workers visit, check documents and confirm the need before any campaign goes live.
+  - icon: users
+    title: Community first
+    text: Volunteers, partners and former beneficiaries work together to support families beyond the money.
+  - icon: award
+    title: 80G tax benefit
+    text: We are a registered trust and your donations qualify for tax exemption under Section 80G.
+  - icon: heart
+    title: 100% reaches the family
+    text: Campaign donations go to the verified family. Only payment-gateway fees, shown at checkout, are deducted.
+
+causes_heading: Give by cause
+causes_text: Want to make a bigger impact? Cause funds pool donations and help campaigns that need a final push reach their goal.
+
+categories_heading: Campaign categories
+categories:
+  - group: Health
+    items: [Medical, Disability, Mental Health]
+  - group: Family
+    items: [Children, Education, Seniors]
+  - group: Communities
+    items: [Migrant Workers, Livelihood, Housing]
+
+community_heading: Beyond crowdfunding
+community_text: We bring former beneficiaries, volunteers and partners together through regular community programmes.
+community:
+  - title: Saturday Skills Club
+    text: Weekend skills training and mentoring for young adults with special needs, run with corporate partners.
+    image: /images/uploads/community-1.jpg
+  - title: Sports for All
+    text: Monthly football and cricket meets that bring together students, migrant workers and volunteers.
+    image: /images/uploads/community-2.jpg
+  - title: Festival Meals
+    text: Shared festival meals that connect families in our care with volunteers and neighbours.
+    image: /images/uploads/community-3.jpg
+
+help_band:
+  title: Do you or someone you know need help?
+  text: Tell us about the situation. Our case team will get in touch within 3 working days.
+  button_label: Refer a case
+  button_url: /need-help/

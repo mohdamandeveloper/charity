@@ -1,0 +1,8 @@
+{{- with hugo.Data.settings.contact }}
+<ul class="contact-list">
+  <li>{{ partial "icon.html" "mail" }} <a href="mailto:{{ .email }}">{{ .email }}</a></li>
+  <li>{{ partial "icon.html" "phone" }} <a href="tel:{{ replaceRE "[^+0-9]" "" .phone }}">{{ .phone }}</a></li>
+  <li>{{ partial "icon.html" "pin" }} <span>{{ .address | strings.TrimSpace | htmlEscape | replaceRE "\n" "<br>" | safeHTML }}</span></li>
+  <li>{{ partial "icon.html" "clock" }} <span>{{ .hours }}</span></li>
+</ul>
+{{- end }}

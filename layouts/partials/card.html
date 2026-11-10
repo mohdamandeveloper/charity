@@ -1,0 +1,13 @@
+{{- /* Card for a campaign or cause fund */ -}}
+<article class="card">
+  <a class="card-img" href="{{ .RelPermalink }}" tabindex="-1" aria-hidden="true">
+    {{- with .Params.image }}<img src="{{ . | relURL }}" alt="" loading="lazy" width="600" height="400">{{ end }}
+    {{- with .Params.categories }}<span class="tag">{{ index . 0 }}</span>{{ end }}
+  </a>
+  <div class="card-body">
+    {{ partial "days-left.html" . }}
+    <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+    <p>{{ .Params.summary | default .Summary | plainify | truncate 110 }}</p>
+    {{ partial "progress.html" . }}
+  </div>
+</article>

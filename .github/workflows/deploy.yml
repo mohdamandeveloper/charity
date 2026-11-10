@@ -1,0 +1,67 @@
+# Builds the website and uploads it to your own hosting.
+# Runs every time content is saved in the CMS (each save is a commit to main),
+# and once a day so "Ends in X days" counters stay fresh.
+#
+# Set these in GitHub → Settings → Secrets and variables → Actions:
+#   FTP_SERVER      e.g. ftp.yourdomain.org
+#   FTP_USERNAME    your FTP/cPanel username
+#   FTP_PASSWORD    your FTP password
+#   FTP_REMOTE_DIR  e.g. /public_html/   (must end with a slash)
+#   SITE_URL        e.g. https://www.yourdomain.org/
+
+name: Build and deploy
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "30 0 * * *"   # 6:00 am IST daily
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v4
+
+      - name: Install Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.169.0"
+          extended: true
+
+      - name: Build the site
+        run: hugo --gc --minify --baseURL "${{ secrets.SITE_URL }}"
+
+      # ---- Option A: FTP / FTPS upload (works with any shared hosting) ----
+      - name: Upload to hosting (FTP)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps          # use "ftp" if your host does not support FTPS
+          local-dir: ./public/
+          server-dir: ${{ secrets.FTP_REMOTE_DIR }}
+          exclude: |
+            **/.git*
+            **/.git*/**
+
+      # ---- Option B: SSH / rsync upload (VPS or hosting with SSH) ----
+      # Remove Option A above and uncomment this block. Add secrets:
+      # SSH_HOST, SSH_USER, SSH_PRIVATE_KEY, SSH_REMOTE_DIR
+      #
+      # - name: Upload to hosting (SSH)
+      #   uses: burnett01/rsync-deployments@7.0.2
+      #   with:
+      #     switches: -avz --delete
+      #     path: public/
+      #     remote_path: ${{ secrets.SSH_REMOTE_DIR }}
+      #     remote_host: ${{ secrets.SSH_HOST }}
+      #     remote_user: ${{ secrets.SSH_USER }}
+      #     remote_key: ${{ secrets.SSH_PRIVATE_KEY }}

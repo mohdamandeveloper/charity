@@ -1,0 +1,33 @@
+{{- $s := hugo.Data.settings -}}
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-about">
+      <a class="brand brand-light" href="{{ "/" | relURL }}">
+        <span class="brand-mark" aria-hidden="true">{{ partial "icon.html" "sun" }}</span>
+        <span class="brand-name">{{ $s.site_name }}</span>
+      </a>
+      <p class="footer-address">{{ $s.contact.address | strings.TrimSpace | htmlEscape | replaceRE "\n" "<br>" | safeHTML }}</p>
+      <p>
+        <a href="mailto:{{ $s.contact.email }}">{{ $s.contact.email }}</a><br>
+        <a href="tel:{{ replaceRE "[^+0-9]" "" $s.contact.phone }}">{{ $s.contact.phone }}</a>
+      </p>
+      <ul class="social">
+        {{- range $s.social }}
+        <li><a href="{{ .url }}" rel="noopener" target="_blank" aria-label="{{ .name }}">{{ partial "icon.html" (lower .name) }}</a></li>
+        {{- end }}
+      </ul>
+    </div>
+    {{- range hugo.Data.menu.footer }}
+    <div class="footer-col">
+      <h2>{{ .heading }}</h2>
+      <ul>
+        {{- range .links }}<li><a href="{{ .url | relURL }}">{{ .label }}</a></li>{{ end }}
+      </ul>
+    </div>
+    {{- end }}
+  </div>
+  <div class="container footer-bottom">
+    <p>{{ $s.registration }}</p>
+    <p>© {{ now.Year }} {{ $s.site_name }} · <a href="{{ "/privacy/" | relURL }}">Privacy Policy</a> · <a href="{{ "/terms/" | relURL }}">Terms of Use</a></p>
+  </div>
+</footer>

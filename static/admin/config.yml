@@ -1,0 +1,357 @@
+# Content Manager settings (Sveltia CMS / Decap CMS)
+# Editors open https://your-site.org/admin/ to update the website.
+
+backend:
+  name: github
+  repo: YOUR-GITHUB-USERNAME/YOUR-REPO-NAME   # ← change this
+  branch: main
+  # Optional: for "Sign in with GitHub" (instead of a personal access token),
+  # deploy the free sveltia-cms-auth Cloudflare Worker and put its URL here:
+  # base_url: https://sveltia-cms-auth.YOUR-SUBDOMAIN.workers.dev
+  commit_messages:
+    create: "Add {{collection}} “{{slug}}”"
+    update: "Update {{collection}} “{{slug}}”"
+    delete: "Delete {{collection}} “{{slug}}”"
+    uploadMedia: "Upload “{{path}}”"
+    deleteMedia: "Delete “{{path}}”"
+
+# Where uploaded images and PDFs are stored
+media_folder: static/images/uploads
+public_folder: /images/uploads
+
+site_url: https://www.example.org
+display_url: https://www.example.org
+logo_url: /favicon.svg
+
+collections:
+  # ------------------------------------------------------------------
+  - name: campaigns
+    label: Campaigns
+    label_singular: Campaign
+    description: Individual fundraising campaigns for verified families.
+    folder: content/campaigns
+    create: true
+    slug: "{{slug}}"
+    summary: "{{title}} — {{status}}"
+    sortable_fields: [date, title, end_date]
+    view_filters:
+      - { label: Open, field: status, pattern: open }
+      - { label: Closed, field: status, pattern: closed }
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Published on, name: date, widget: datetime, time_format: false, date_format: "DD MMM YYYY", format: "YYYY-MM-DD" }
+      - { label: Campaign ends on, name: end_date, widget: datetime, time_format: false, date_format: "DD MMM YYYY", format: "YYYY-MM-DD" }
+      - { label: Status, name: status, widget: select, options: [open, closed], default: open, hint: "Set to 'closed' when the campaign ends. Closed campaigns move to the 'Completed' list." }
+      - { label: Feature on homepage, name: featured, widget: boolean, default: false, required: false }
+      - { label: Photo, name: image, widget: image, hint: "Landscape photo, at least 1200×800. Only use photos the family has agreed to share." }
+      - { label: Short summary, name: summary, widget: text, hint: "One or two sentences shown on the campaign card." }
+      - &categories
+        label: Categories
+        name: categories
+        widget: select
+        multiple: true
+        options: [Medical, Disability, Mental Health, Children, Education, Seniors, Migrant Workers, Livelihood, Housing]
+        hint: Choose one or more. The first one is shown on the card.
+      - { label: Location, name: location, widget: string, required: false }
+      - { label: Goal amount (₹), name: goal, widget: number, value_type: int, min: 0 }
+      - { label: Amount raised so far (₹), name: raised, widget: number, value_type: int, min: 0, hint: "Update this from your payment dashboard." }
+      - { label: Number of donors, name: donors, widget: number, value_type: int, min: 0, required: false }
+      - { label: Donation link, name: donate_link, widget: string, required: false, hint: "Razorpay Payment Page link for this campaign. Leave empty to use the general donation link from Settings." }
+      - { label: Story, name: body, widget: markdown }
+
+  # ------------------------------------------------------------------
+  - name: causes
+    label: Cause Funds
+    label_singular: Cause Fund
+    description: Pooled funds that donors can give to by cause.
+    folder: content/causes
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Published on, name: date, widget: datetime, time_format: false, format: "YYYY-MM-DD" }
+      - { label: Fund ends on, name: end_date, widget: datetime, time_format: false, format: "YYYY-MM-DD", required: false }
+      - { label: Status, name: status, widget: select, options: [open, closed], default: open }
+      - { label: Image, name: image, widget: image }
+      - { label: Short summary, name: summary, widget: text }
+      - *categories
+      - { label: Goal amount (₹), name: goal, widget: number, value_type: int, min: 0 }
+      - { label: Amount raised so far (₹), name: raised, widget: number, value_type: int, min: 0 }
+      - { label: Number of donors, name: donors, widget: number, value_type: int, min: 0, required: false }
+      - { label: Donation link, name: donate_link, widget: string, required: false }
+      - { label: Description, name: body, widget: markdown }
+
+  # ------------------------------------------------------------------
+  - name: news
+    label: News & Stories
+    label_singular: News post
+    folder: content/news
+    create: true
+    slug: "{{slug}}"
+    sortable_fields: [date, title]
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Date, name: date, widget: datetime, time_format: false, format: "YYYY-MM-DD" }
+      - { label: Image, name: image, widget: image, required: false }
+      - { label: Short summary, name: summary, widget: text }
+      - { label: Author, name: author, widget: string, default: "Brightpath team", required: false }
+      - { label: Article, name: body, widget: markdown }
+
+  # ------------------------------------------------------------------
+  - name: pages
+    label: Pages
+    description: About, Donate, Volunteer, Contact and other pages.
+    files:
+      - label: What We Do (About)
+        name: about
+        file: content/about.md
+        fields: &page_fields
+          - { label: Title, name: title, widget: string }
+          - { label: Small heading above title, name: eyebrow, widget: string, required: false }
+          - { label: Subtitle, name: subtitle, widget: text, required: false }
+          - { label: Image, name: image, widget: image, required: false }
+          - { label: Page content, name: body, widget: markdown, required: false }
+      - { label: Our Community, name: community, file: content/community.md, fields: *page_fields }
+      - label: Our Team
+        name: team-page
+        file: content/team.md
+        fields:
+          - { label: Title, name: title, widget: string }
+          - { label: Small heading above title, name: eyebrow, widget: string, required: false }
+          - { label: Subtitle, name: subtitle, widget: text, required: false }
+          - { label: Show team members, name: show_team, widget: boolean, default: true, hint: "Team members are edited under Settings → Team members." }
+          - { label: Page content, name: body, widget: markdown, required: false }
+      - label: Annual Reports
+        name: reports
+        file: content/reports.md
+        fields:
+          - { label: Title, name: title, widget: string }
+          - { label: Small heading above title, name: eyebrow, widget: string, required: false }
+          - { label: Subtitle, name: subtitle, widget: text, required: false }
+          - label: Reports
+            name: reports
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: PDF file, name: file, widget: file }
+          - { label: Page content, name: body, widget: markdown, required: false }
+      - label: Donate
+        name: donate
+        file: content/donate.md
+        fields:
+          - { label: Title, name: title, widget: string }
+          - { label: Small heading above title, name: eyebrow, widget: string, required: false }
+          - { label: Subtitle, name: subtitle, widget: text, required: false }
+          - { label: Show UPI and bank details, name: show_bank_details, widget: boolean, default: true, hint: "Details are edited under Settings → Site settings → Donations." }
+          - { label: Page content, name: body, widget: markdown, required: false }
+      - label: Be a Volunteer
+        name: volunteer
+        file: content/volunteer.md
+        fields: &form_page_fields
+          - { label: Title, name: title, widget: string }
+          - { label: Small heading above title, name: eyebrow, widget: string, required: false }
+          - { label: Subtitle, name: subtitle, widget: text, required: false }
+          - { label: Form, name: form, widget: select, options: [contact, volunteer, partner, help], required: false }
+          - { label: Show contact details, name: show_contact, widget: boolean, default: false, required: false }
+          - { label: Page content, name: body, widget: markdown, required: false }
+      - { label: Be a Partner, name: partner, file: content/partner.md, fields: *form_page_fields }
+      - { label: "Need Help?", name: need-help, file: content/need-help.md, fields: *form_page_fields }
+      - { label: Contact Us, name: contact, file: content/contact.md, fields: *form_page_fields }
+      - label: FAQs
+        name: faq
+        file: content/faq.md
+        fields:
+          - { label: Title, name: title, widget: string }
+          - { label: Small heading above title, name: eyebrow, widget: string, required: false }
+          - { label: Subtitle, name: subtitle, widget: text, required: false }
+          - label: Questions
+            name: faqs
+            widget: list
+            summary: "{{fields.question}}"
+            fields:
+              - { label: Question, name: question, widget: string }
+              - { label: Answer, name: answer, widget: markdown }
+          - { label: Page content, name: body, widget: markdown, required: false }
+      - { label: Privacy Policy, name: privacy, file: content/privacy.md, fields: *page_fields }
+      - { label: Terms of Use, name: terms, file: content/terms.md, fields: *page_fields }
+      - label: Campaigns page intro
+        name: campaigns-intro
+        file: content/campaigns/_index.md
+        fields: *page_fields
+      - { label: Cause Funds page intro, name: causes-intro, file: content/causes/_index.md, fields: *page_fields }
+
+  # ------------------------------------------------------------------
+  - name: homepage
+    label: Homepage
+    files:
+      - label: Homepage sections
+        name: home
+        file: data/home.yaml
+        fields:
+          - label: Hero (top banner)
+            name: hero
+            widget: object
+            fields:
+              - { label: Small heading, name: eyebrow, widget: string }
+              - { label: Main heading, name: title, widget: string }
+              - { label: Text, name: text, widget: text }
+              - { label: Image, name: image, widget: image }
+              - { label: Main button, name: primary_button, widget: object, fields: [ { label: Label, name: label, widget: string }, { label: Link, name: url, widget: string } ] }
+              - { label: Second button, name: secondary_button, widget: object, fields: [ { label: Label, name: label, widget: string }, { label: Link, name: url, widget: string } ] }
+          - { label: Campaigns heading, name: campaigns_heading, widget: string }
+          - { label: Number of campaigns to show, name: campaigns_count, widget: number, value_type: int, default: 6 }
+          - label: Event banner
+            name: event
+            widget: object
+            fields:
+              - { label: Show event banner, name: enabled, widget: boolean }
+              - { label: Title, name: title, widget: string }
+              - { label: Date, name: date, widget: string }
+              - { label: Text, name: text, widget: text }
+              - { label: Image, name: image, widget: image }
+              - { label: Button label, name: button_label, widget: string }
+              - { label: Button link, name: button_url, widget: string }
+          - label: About & numbers
+            name: about
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Text, name: text, widget: text }
+              - label: Numbers
+                name: stats
+                widget: list
+                summary: "{{fields.value}} {{fields.label}}"
+                fields:
+                  - { label: Number, name: value, widget: string }
+                  - { label: Label, name: label, widget: string }
+          - { label: "Why give with us — heading", name: features_heading, widget: string }
+          - label: "Why give with us — items"
+            name: features
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { label: Icon, name: icon, widget: select, options: [shield, users, award, heart, hand, check, sun, file] }
+              - { label: Title, name: title, widget: string }
+              - { label: Text, name: text, widget: text }
+          - { label: Cause funds heading, name: causes_heading, widget: string }
+          - { label: Cause funds text, name: causes_text, widget: text }
+          - { label: Categories heading, name: categories_heading, widget: string }
+          - label: Category groups
+            name: categories
+            widget: list
+            summary: "{{fields.group}}"
+            fields:
+              - { label: Group name, name: group, widget: string }
+              - { label: Categories, name: items, widget: list, hint: "Must match the category names used on campaigns." }
+          - { label: Community heading, name: community_heading, widget: string }
+          - { label: Community text, name: community_text, widget: text }
+          - label: Community programmes
+            name: community
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Text, name: text, widget: text }
+              - { label: Image, name: image, widget: image }
+          - label: "'Need help?' band (bottom of pages)"
+            name: help_band
+            widget: object
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Text, name: text, widget: text }
+              - { label: Button label, name: button_label, widget: string }
+              - { label: Button link, name: button_url, widget: string }
+
+  # ------------------------------------------------------------------
+  - name: settings
+    label: Settings
+    files:
+      - label: Site settings
+        name: site
+        file: data/settings.yaml
+        fields:
+          - { label: Charity name, name: site_name, widget: string }
+          - { label: Tagline, name: tagline, widget: string }
+          - { label: Logo, name: logo, widget: image, required: false, hint: "Leave empty to use the text logo." }
+          - { label: Short description (for Google and social sharing), name: description, widget: text }
+          - { label: Currency symbol, name: currency, widget: string, default: "₹" }
+          - label: Contact details
+            name: contact
+            widget: object
+            fields:
+              - { label: Email, name: email, widget: string }
+              - { label: Phone, name: phone, widget: string }
+              - { label: Address, name: address, widget: text }
+              - { label: Office hours, name: hours, widget: string }
+          - { label: Registration / 80G text (footer), name: registration, widget: text }
+          - label: Donations
+            name: donate
+            widget: object
+            fields:
+              - { label: Default donation link (Razorpay Payment Page), name: link, widget: string }
+              - { label: UPI ID, name: upi_id, widget: string }
+              - { label: Bank name, name: bank_name, widget: string }
+              - { label: Account name, name: account_name, widget: string }
+              - { label: Account number, name: account_number, widget: string }
+              - { label: IFSC code, name: ifsc, widget: string }
+          - label: Forms
+            name: forms
+            widget: object
+            collapsed: true
+            fields:
+              - { label: Form service URL, name: action, widget: string, default: "https://api.web3forms.com/submit" }
+              - { label: Web3Forms access key, name: access_key, widget: string }
+          - label: Social media
+            name: social
+            widget: list
+            summary: "{{fields.name}}"
+            fields:
+              - { label: Network, name: name, widget: select, options: [Facebook, Instagram, LinkedIn, YouTube, X] }
+              - { label: Link, name: url, widget: string }
+      - label: Menus
+        name: menu
+        file: data/menu.yaml
+        fields:
+          - label: Main menu
+            name: main
+            widget: list
+            summary: "{{fields.label}}"
+            fields:
+              - { label: Label, name: label, widget: string }
+              - { label: Link, name: url, widget: string }
+              - label: Dropdown items
+                name: children
+                widget: list
+                required: false
+                summary: "{{fields.label}}"
+                fields:
+                  - { label: Label, name: label, widget: string }
+                  - { label: Link, name: url, widget: string }
+          - label: Footer columns
+            name: footer
+            widget: list
+            summary: "{{fields.heading}}"
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - label: Links
+                name: links
+                widget: list
+                summary: "{{fields.label}}"
+                fields:
+                  - { label: Label, name: label, widget: string }
+                  - { label: Link, name: url, widget: string }
+      - label: Team members
+        name: team
+        file: data/team.yaml
+        fields:
+          - { label: Intro text, name: intro, widget: text }
+          - label: Members
+            name: members
+            widget: list
+            summary: "{{fields.name}} — {{fields.role}}"
+            fields:
+              - { label: Name, name: name, widget: string }
+              - { label: Role, name: role, widget: string }
+              - { label: Photo, name: photo, widget: image, required: false }
+              - { label: Short bio, name: bio, widget: text }

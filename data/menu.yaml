@@ -1,0 +1,68 @@
+main:
+  - label: About Us
+    url: /about/
+    children:
+      - label: What We Do
+        url: /about/
+      - label: Our Team
+        url: /team/
+      - label: Annual Reports
+        url: /reports/
+      - label: Our Community
+        url: /community/
+  - label: Donate
+    url: /campaigns/
+    children:
+      - label: Individual Campaigns
+        url: /campaigns/
+      - label: Cause Funds
+        url: /causes/
+      - label: Donate to Brightpath
+        url: /donate/
+  - label: Get Involved
+    url: /volunteer/
+    children:
+      - label: Be a Volunteer
+        url: /volunteer/
+      - label: Be a Partner
+        url: /partner/
+  - label: Need Help?
+    url: /need-help/
+  - label: News
+    url: /news/
+
+footer:
+  - heading: About Us
+    links:
+      - label: What We Do
+        url: /about/
+      - label: Our Team
+        url: /team/
+      - label: Annual Reports
+        url: /reports/
+      - label: News
+        url: /news/
+  - heading: Get Involved
+    links:
+      - label: Our Community
+        url: /community/
+      - label: Be a Volunteer
+        url: /volunteer/
+      - label: Be a Partner
+        url: /partner/
+  - heading: Give
+    links:
+      - label: Campaigns
+        url: /campaigns/
+      - label: Cause Funds
+        url: /causes/
+      - label: Donate
+        url: /donate/
+  - heading: Help
+    links:
+      - label: Contact Us
+        url: /contact/
+      - label: FAQs
+        url: /faq/
+      - label: Need Help?
+        url: /need-help/
